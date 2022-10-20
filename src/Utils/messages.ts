@@ -454,7 +454,7 @@ export const generateWAMessageContent = async(
 		m[messageType].contextInfo.mentionedJid = message.mentions
 	}
 
-	if('contextInfo' in message && message.contextInfo?.length) {
+	if('contextInfo' in message && message) {
 		m[messageType].contextInfo = m[messageType] || { }
 	}
 
