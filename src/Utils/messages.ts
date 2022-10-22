@@ -448,16 +448,21 @@ export const generateWAMessageContent = async(
 		m = { viewOnceMessage: { message: m } }
 	}
 
+	const [messageType] = Object.keys(m)
 	if('mentions' in message && message.mentions?.length) {
-		const [messageType] = Object.keys(m)
 		m[messageType].contextInfo = m[messageType] || { }
 		m[messageType].contextInfo.mentionedJid = message.mentions
 	}
 
-	if('contextInfo' in message && message) {
-		const [messageType] = Object.keys(m)
+	if('forwards' in message && message.forwards?.length) {
 		m[messageType].contextInfo = m[messageType] || { }
-		//m[messageType].contextInfo = message.contextInfo
+		m[messageType].contextInfo.forwardingScore = message.forwards
+		m[messageType].contextInfo.isForwarded = true
+	}
+
+	if('externalAdReply' in message && message.externalAdReply?.length) {
+		m[messageType].contextInfo = m[messageType] || { }
+		m[messageType].contextInfo.externalAdReply = message.externalAdReply
 	}
 
 	return WAProto.Message.fromObject(m)

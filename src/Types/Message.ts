@@ -51,6 +51,12 @@ type Mentionable = {
     /** list of jids that are mentioned in the accompanying text */
     mentions?: string[]
 }
+type Forwardable = {
+    forwards?: string[]
+}
+type ExternalAd = {
+    externalAdReply?: string[]
+}
 type ViewOnce = {
     viewOnce?: boolean
 }
@@ -85,13 +91,13 @@ export type AnyMediaMessageContent = (
         image: WAMediaUpload
         caption?: string
         jpegThumbnail?: string
-    } & Mentionable & Buttonable & Templatable & WithDimensions)
+    } & Mentionable & Forwardable & ExternalAd & Buttonable & Templatable & WithDimensions)
     | ({
         video: WAMediaUpload
         caption?: string
         gifPlayback?: boolean
         jpegThumbnail?: string
-    } & Mentionable & Buttonable & Templatable & WithDimensions)
+    } & Mentionable & Forwardable & ExternalAd & Buttonable & Templatable & WithDimensions)
     | {
         audio: WAMediaUpload
         /** if set to true, will send as a `voice note` */
@@ -124,7 +130,7 @@ export type AnyRegularMessageContent = (
 	    text: string
         linkPreview?: WAUrlInfo | null
     }
-    & Mentionable & Buttonable & Templatable & Listable)
+    & Mentionable & Forwardable & ExternalAd & Buttonable & Templatable & Listable)
     | AnyMediaMessageContent
     | {
         contacts: {
