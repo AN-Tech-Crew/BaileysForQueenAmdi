@@ -454,13 +454,13 @@ export const generateWAMessageContent = async(
 		m[messageType].contextInfo.mentionedJid = message.mentions
 	}
 
-	if('forwards' in message && message.forwards?.length) {
+	if('forwards' in message && message.forwards) {
 		m[messageType].contextInfo = m[messageType] || { }
 		m[messageType].contextInfo.forwardingScore = message.forwards
 		m[messageType].contextInfo.isForwarded = true
 	}
 
-	if('externalAdReply' in message && message.externalAdReply?.length) {
+	if('externalAdReply' in message && message.externalAdReply) {
 		m[messageType].contextInfo = m[messageType] || { }
 		m[messageType].contextInfo.externalAdReply = message.externalAdReply
 	}
