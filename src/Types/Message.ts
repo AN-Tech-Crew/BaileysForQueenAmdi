@@ -52,10 +52,10 @@ type Mentionable = {
     mentions?: string[]
 }
 type Forwardable = {
-    forwards?: string[]
+    forwards?: number
 }
 type ExternalAd = {
-    externalAdReply?: string[]
+    externalAdReply?: string
 }
 type ViewOnce = {
     viewOnce?: boolean
