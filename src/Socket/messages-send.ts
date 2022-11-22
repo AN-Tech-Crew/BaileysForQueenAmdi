@@ -14,12 +14,14 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 		logger,
 		linkPreviewImageThumbnailWidth,
 		generateHighQualityLinkPreview,
+		options: axiosOptions,
 		patchMessageBeforeSending,
 	} = config
 	const sock = makeGroupsSocket(config)
 	const {
 		ev,
 		authState,
+		processingMutex,
 		upsertMessage,
 		query,
 		fetchPrivacySettings,
@@ -622,12 +624,15 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 							text,
 							{
 								thumbnailWidth: linkPreviewImageThumbnailWidth,
-								timeoutMs: 3_000,
+								fetchOpts: {
+									timeout: 3_000,
+									...axiosOptions || { }
+								},
+								logger,
 								uploadImage: generateHighQualityLinkPreview
 									? waUploadToServer
 									: undefined
 							},
-							logger
 						),
 						upload: waUploadToServer,
 						mediaCache: config.mediaCache,
@@ -649,7 +654,9 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 				await relayMessage(jid, fullMsg.message!, { messageId: fullMsg.key.id!, cachedGroupMetadata: options.cachedGroupMetadata, additionalAttributes })
 				if(config.emitOwnEvents) {
 					process.nextTick(() => {
-						upsertMessage(fullMsg, 'append')
+						processingMutex.mutex(() => (
+							upsertMessage(fullMsg, 'append')
+						))
 					})
 				}
 
