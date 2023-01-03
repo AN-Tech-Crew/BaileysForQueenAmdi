@@ -80,10 +80,10 @@ export type SocketConfig = {
     /**
      * Optionally patch the message before sending out
      * */
-    /*patchMessageBeforeSending: (
+    patchMessageBeforeSending: (
         msg: proto.IMessage,
         recipientJids: string[],
-    ) => Promise<proto.IMessage> | proto.IMessage*/
+    ) => Promise<proto.IMessage> | proto.IMessage
 
     /** verify app state MACs */
     appStateMacVerification: {

@@ -656,8 +656,7 @@ export const extractMessageContent = (content: WAMessageContent | undefined | nu
  * Returns the device predicted by message ID
  */
 export const getDevice = (id: string) => {
-	//const deviceType = id.length > 21 ? 'android' : id.substring(0, 2) === '3A' ? 'ios' : 'web'
-	const deviceType = id.length > 21 ? 'android' : id.startsWith("QUEENAMDI") ? 'amdi' : id.substring(0, 2) === '3A' ? 'ios' : 'web'
+	const deviceType = id.length > 21 ? 'android' : id.substring(0, 2) === '3A' ? 'ios' : 'web'
 	return deviceType
 }
 
@@ -801,37 +800,4 @@ export const assertMediaContent = (content: proto.IMessage | null | undefined) =
 	}
 
 	return mediaContent
-}
-
-
-const generateContextInfo = () => {
-	const info: proto.IMessageContextInfo = {
-		deviceListMetadataVersion: 2,
-		deviceListMetadata: { }
-	}
-	return info
-}
-
-/**
- * this is an experimental patch to make buttons work
- * Don't know how it works, but it does for now
- */
-export const patchMessageForMdIfRequired = (message: proto.IMessage) => {
-	const requiresPatch = !!(
-		message.buttonsMessage
-		// || message.templateMessage
-		|| message.listMessage
-	)
-	if(requiresPatch) {
-		message = {
-			viewOnceMessage: {
-				message: {
-					messageContextInfo: generateContextInfo(),
-					...message
-				}
-			}
-		}
-	}
-
-	return message
 }
